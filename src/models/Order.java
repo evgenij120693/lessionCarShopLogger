@@ -2,14 +2,24 @@ package models;
 
 import com.sun.org.apache.xpath.internal.operations.Or;
 
+import java.io.Serializable;
+
 /**
  * Created by sa on 08.02.17.
  */
-public class Order {
+public class Order implements Serializable {
     private Car car;
     private int sum;
     private long orderNumber;
     private short orgNumber;
+
+    @Override
+    public String toString() {
+        return car.getModel() + " Regnum: " +
+                car.getRegNum() + " sum: " + sum +
+                " orderNum: " + orderNumber +
+                " orgNumber: " + orgNumber;
+    }
 
     public short getOrgNumber() {
         return orgNumber;

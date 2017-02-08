@@ -1,9 +1,11 @@
 package models;
 
+import java.io.Serializable;
+
 /**
  * Created by sa on 08.02.17.
  */
-public class Car {
+public class Car implements Serializable{
     private int price;
     private String model;
     private String regNum;
