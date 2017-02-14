@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+
+    <appender name="CustomAppender" class="customlogger.CustomAppender">
+
+        <param name="user" value="root"/>
+        <param name="pass" value="password"/>
+
+        <layout class="customlogger.CustomClientLogger">
+        </layout>
+    </appender>
+
+    <root>
+        <level value="DEBUG" />
+        <appender-ref ref="CustomAppender" />
+    </root>
+
+</log4j:configuration>

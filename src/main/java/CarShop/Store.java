@@ -1,17 +1,21 @@
 package CarShop;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import datamanager.DataManager;
 import models.Car;
 import models.Client;
 import models.Order;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
 
 /**
  * Created by sa on 08.02.17.
  */
+
 public class Store {
     private HashMap<Order, Client> contractList = new HashMap<>(256);
     private HashSet<Car> cars = new HashSet<>(32);
@@ -20,41 +24,46 @@ public class Store {
     private static final String FILE_CARS = "fileCars.txt";
     private static final String FILE_CLIENTS = "fileClients.txt";
 
+    private static Logger logger = Logger.getLogger(Store.class);
+
+    static {
+        BasicConfigurator.configure();
+    }
 
     public void createCar(int price, String model,
-                          String regNumber){
+                          String regNumber) {
         Car car = new Car(price, model, regNumber);
         cars.add(car);
     }
 
-    public void save (){
+    public void save() {
         DataManager.serialize(cars, FILE_CARS);
         DataManager.serialize(clients, FILE_CLIENTS);
         DataManager.serialize(contractList, FILE_CONTRACTS);
     }
 
-    public void recover (){
-        ArrayList <Car> list = new ArrayList<>();
+    public void recover() {
+        ArrayList<Car> list = new ArrayList<>();
         DataManager.deserialize(FILE_CARS, list);
-        for (Car car:
-             list) {
+        for (Car car :
+                list) {
             cars.add(car);
         }
 
-        ArrayList <Client> listClient = new ArrayList<>();
+        ArrayList<Client> listClient = new ArrayList<>();
         DataManager.deserialize(FILE_CLIENTS, listClient);
-        for (Client client:
+        for (Client client :
                 listClient) {
             clients.add(client);
         }
 
-        ArrayList <Order> contractListOne = new ArrayList<>();
-        ArrayList <Client> contractListTwo = new ArrayList<>();
-        DataManager.deserialize(FILE_CONTRACTS,  contractList);
+        ArrayList<Order> contractListOne = new ArrayList<>();
+        ArrayList<Client> contractListTwo = new ArrayList<>();
+        DataManager.deserialize(FILE_CONTRACTS, contractList);
     }
 
-    public Order getFirstOrder(){
-        for (Order order:
+    public Order getFirstOrder() {
+        for (Order order :
                 contractList.keySet()) {
             return order;
         }
@@ -65,20 +74,20 @@ public class Store {
     public void sellCar(String model,
                         String firstName,
                         String lastName,
-                        String phoneNumber){
+                        String phoneNumber) throws CarNotFoundException {
         Client client = new Client(firstName,
                 lastName, phoneNumber);
         clients.add(client);
 
         Car tmpCar = null;
-        for (Car car:
+        for (Car car :
                 cars) {
-            if (car.getModel().equals(model)){
+            if (car.getModel().equals(model)) {
                 tmpCar = car;
                 break;
             }
         }
-        if (tmpCar != null){
+        if (tmpCar != null) {
             Random random = new Random();
             Order order = new Order(tmpCar,
                     tmpCar.getPrice() * 2,
@@ -86,23 +95,24 @@ public class Store {
             );
             contractList.put(order, client);
             cars.remove(tmpCar);
-        }
-        else{
-            System.out.println("Car not found");
-        }
-    }
-
-    public void getOrders(){
-        for (Order order :
-                contractList.keySet()) {
-            System.out.println(order.toString());
+        } else {
+            CarNotFoundException ex=new CarNotFoundException();
+            logger.error("car with model "+model+" was not found", ex);
+            throw ex;
         }
     }
 
-    public void getFreeCars(){
-        for (Car car:
-                cars){
-            System.out.println(car.getModel());
-        }
+    public ArrayList<Order> getOrders() {
+        return new ArrayList<Order>(contractList.keySet());
+    }
+
+    public ArrayList<Car> getFreeCars() {
+        ArrayList<Car> cars = new ArrayList<>(this.cars.size());
+        cars.addAll(cars);
+        return cars;
+    }
+
+    public HashMap<Order, Client> getContractList() {
+        return contractList;
     }
 }
