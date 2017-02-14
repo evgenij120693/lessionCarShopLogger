@@ -4,10 +4,16 @@
 
     <appender name="CustomAppender" class="customlogger.CustomAppender">
 
-        <param name="user" value="root"/>
-        <param name="pass" value="password"/>
+        <param name="user" value="evgenij.svetozarov@yandex.ru"/>
+        <param name="pass" value="utugub39"/>
+        <param name="host" value="smtp.yandex.ru"/>
+        <param name="port" value="465"/>
+        <param name="addresFrom" value="evgenij.svetozarov@yandex.ru"/>
+        <param name="addresTo" value="e.svetozarov.stc@innopolis.ru"/>
+        <param name="fileName" value="logMail.log"/>
 
-        <layout class="customlogger.CustomClientLogger">
+        <layout class="customlogger.CustomClientLayout">
+            <param name="ConversionPattern" value="%-7p %d [%t] %c %x - %m%n"/>
         </layout>
     </appender>
 
