@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- * Created by Шмыга on 14.02.2017.
+ * Created by E. Svetozarov on 14.02.2017.
  */
 public class CustomAppender extends AppenderSkeleton{
     private String user;

@@ -5,7 +5,7 @@
     <appender name="CustomAppender" class="customlogger.CustomAppender">
 
         <param name="user" value="evgenij.svetozarov@yandex.ru"/>
-        <param name="pass" value="utugub39"/>
+        <param name="pass" value="*****"/>
         <param name="host" value="smtp.yandex.ru"/>
         <param name="port" value="465"/>
         <param name="addresFrom" value="evgenij.svetozarov@yandex.ru"/>
